@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:     
+    slim:
+        image: php:7-alpine
+        working_dir: /var/www
+        command: php -S 0.0.0.0:8080 -t public
+        environment:
+            docker: "true"
+        ports:
+            - 8080:8080
+        volumes:
+            - .:/var/www
+            - logs:/var/www/logs
+
+    # PostgreSQL
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_USER: slim_user
+            POSTGRES_PASSWORD: secretP@55word
+            POSTGRES_DB: slim_database
+        ports:
+            - 5432:5432
+        volumes:
+            - database-data:/var/lib/postgresql/data/
+
+volumes:
+  database-data:
+  logs:
